@@ -4,31 +4,282 @@
   <meta charset="UTF-8">
   <title>Add Employee</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { background-color: #f8f9fa; }
-    .card { max-width: 600px; margin: 50px auto; padding: 25px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); background-color: #fff; }
-    h2 { text-align: center; margin-bottom: 25px; color: #333; font-weight: 600; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-card {
+      max-width: 700px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 45px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      color: #1a1a2e;
+      font-weight: 700;
+      font-size: 32px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    h2 i {
+      color: #667eea;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-label i {
+      font-size: 16px;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background-color: #f8f9ff;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      background-color: white;
+      outline: none;
+    }
+
+    .form-control:hover, .form-select:hover {
+      border-color: #764ba2;
+    }
+
+    .input-icon-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #667eea;
+      pointer-events: none;
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-upload-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+      border: 2px dashed #667eea;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .file-upload-label:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-style: solid;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .file-upload-label i {
+      font-size: 24px;
+    }
+
+    .file-name {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #667eea;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 30px;
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-submit i {
+      font-size: 18px;
+    }
+
+    .required-mark {
+      color: #f5576c;
+      margin-left: 4px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .form-card {
+        padding: 30px 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #764ba2;
+      gap: 12px;
+    }
   </style>
 </head>
 <body>
-<div class="card">
-  <h2>Add Employee</h2>
+
+<div class="form-card">
+  <a href="/employees" class="back-link">
+    <i class="fas fa-arrow-left"></i>
+    Back to Employee List
+  </a>
+
+  <div class="header-section">
+    <h2>
+      <i class="fas fa-user-plus"></i>
+      Add New Employee
+    </h2>
+  </div>
+
   <form th:action="@{/employees/add}" th:object="${employee}" method="post" enctype="multipart/form-data">
 
     <input type="hidden" name="empno" th:value="${employee.empno}">
 
-    <div class="mb-3">
-      <label for="ename" class="form-label">Name</label>
-      <input type="text" th:field="*{ename}" class="form-control" id="ename" required>
+    <div class="form-group">
+      <label for="ename" class="form-label">
+        <i class="fas fa-user"></i>
+        Employee Name
+        <span class="required-mark">*</span>
+      </label>
+      <input type="text" th:field="*{ename}" class="form-control" id="ename" placeholder="Enter full name" required>
     </div>
 
-    <div class="mb-3">
-      <label for="job" class="form-label">Job</label>
-      <input type="text" th:field="*{job}" class="form-control" id="job" required>
+    <div class="form-group">
+      <label for="job" class="form-label">
+        <i class="fas fa-briefcase"></i>
+        Job Title
+        <span class="required-mark">*</span>
+      </label>
+      <input type="text" th:field="*{job}" class="form-control" id="job" placeholder="e.g. Software Engineer" required>
     </div>
 
-    <div class="mb-3">
-      <label for="manager" class="form-label">Manager</label>
+    <div class="form-group">
+      <label for="manager" class="form-label">
+        <i class="fas fa-user-tie"></i>
+        Manager
+      </label>
       <select name="managerId" id="manager" class="form-select">
         <option value="">-- Select Manager --</option>
         <option th:each="mgr : ${managers}"
@@ -38,23 +289,40 @@
       </select>
     </div>
 
-    <div class="mb-3">
-      <label for="hiredate" class="form-label">Hire Date</label>
-      <input type="date" th:field="*{hiredate}" class="form-control" id="hiredate" required>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="hiredate" class="form-label">
+          <i class="fas fa-calendar-alt"></i>
+          Hire Date
+          <span class="required-mark">*</span>
+        </label>
+        <input type="date" th:field="*{hiredate}" class="form-control" id="hiredate" required>
+      </div>
+
+      <div class="form-group">
+        <label for="sal" class="form-label">
+          <i class="fas fa-dollar-sign"></i>
+          Salary
+          <span class="required-mark">*</span>
+        </label>
+        <input type="number" th:field="*{sal}" class="form-control" id="sal" placeholder="0.00" required>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label for="sal" class="form-label">Salary</label>
-      <input type="number" th:field="*{sal}" class="form-control" id="sal" required>
+    <div class="form-group">
+      <label for="comm" class="form-label">
+        <i class="fas fa-percentage"></i>
+        Commission
+      </label>
+      <input type="number" th:field="*{comm}" class="form-control" id="comm" placeholder="0.00">
     </div>
 
-    <div class="mb-3">
-      <label for="comm" class="form-label">Commission</label>
-      <input type="number" th:field="*{comm}" class="form-control" id="comm">
-    </div>
-
-    <div class="mb-3">
-      <label for="dept" class="form-label">Department</label>
+    <div class="form-group">
+      <label for="dept" class="form-label">
+        <i class="fas fa-building"></i>
+        Department
+        <span class="required-mark">*</span>
+      </label>
       <select name="deptId" id="dept" class="form-select" required>
         <option value="">-- Select Department --</option>
         <option th:each="d : ${departments}"
@@ -64,15 +332,38 @@
       </select>
     </div>
 
-    <div class="mb-3">
-      <label for="file" class="form-label">Upload Image</label>
-      <input type="file" name="file" id="file" class="form-control" accept="image/*">
+    <div class="form-group">
+      <label class="form-label">
+        <i class="fas fa-image"></i>
+        Upload Profile Image
+      </label>
+      <div class="file-upload-wrapper">
+        <input type="file" name="file" id="file" accept="image/*" onchange="updateFileName(this)">
+        <label for="file" class="file-upload-label">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span>Click to upload or drag and drop</span>
+        </label>
+      </div>
+      <div id="file-name" class="file-name"></div>
     </div>
 
-    <button type="submit" class="btn btn-success w-100">Save</button>
+    <button type="submit" class="btn-submit">
+      <i class="fas fa-save"></i>
+      Save Employee
+    </button>
   </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function updateFileName(input) {
+    const fileName = document.getElementById('file-name');
+    if (input.files && input.files[0]) {
+      fileName.textContent = '📎 ' + input.files[0].name;
+    } else {
+      fileName.textContent = '';
+    }
+  }
+</script>
 </body>
 </html>

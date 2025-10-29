@@ -23,18 +23,6 @@ public class S3ClientService {
     private final S3Client s3Client;
 
 
-    public byte[] getImageFromAws(String fileName) {
-        String key = KEY_PREFIX + fileName;
-        ResponseBytes<GetObjectResponse> objectAsBytes = s3Client.getObjectAsBytes(
-                GetObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .build()
-        );
-
-        return objectAsBytes.asByteArray();
-    }
-
     public String uploadFile(MultipartFile file) {
         try {
             String originalFilename = file.getOriginalFilename();

@@ -70,6 +70,7 @@ public class EmployeeService {
 
 
     @CachePut(value = "employee", key = "#empno")
+    @CacheEvict(value = "employees", allEntries = true)
     public EmployeeDTO updateEmployee(Integer empno, EmployeeDTO dto, MultipartFile file) {
         Employee existing = employeeRepository.findById(empno)
                 .orElseThrow(() -> new RuntimeException("Employee not found with empno: " + empno));

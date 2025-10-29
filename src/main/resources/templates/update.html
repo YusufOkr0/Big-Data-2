@@ -4,39 +4,305 @@
     <meta charset="UTF-8">
     <title>Update Employee</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .card {
-            max-width: 650px;
-            margin: 50px auto;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-            background-color: #fff;
+
+        .form-card {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
         }
-        h2 {
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .header-section {
             text-align: center;
-            margin-bottom: 25px;
-            font-weight: 600;
-            color: #333;
+            margin-bottom: 35px;
         }
+
+        h2 {
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 32px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        h2 i {
+            color: #667eea;
+        }
+
+        .photo-section {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
         .emp-photo {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #dee2e6;
+            border: 5px solid #667eea;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .emp-photo:hover {
+            transform: scale(1.08);
+            border-color: #764ba2;
+            box-shadow: 0 15px 50px rgba(118, 75, 162, 0.5);
+        }
+
+        .photo-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 170px;
+            height: 170px;
+            background: linear-gradient(135deg, #667eea33, #764ba233);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-label i {
+            font-size: 16px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: #f8f9ff;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background-color: white;
+            outline: none;
+        }
+
+        .form-control:hover, .form-select:hover {
+            border-color: #764ba2;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .file-upload-label:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-style: solid;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .file-upload-label i {
+            font-size: 24px;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #667eea;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .required-mark {
+            color: #f5576c;
+            margin-left: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-update {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-update:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(108, 117, 125, 0.5);
+            color: white;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .emp-photo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Update Employee</h2>
+<div class="form-card">
+    <a href="/employees" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Employee List
+    </a>
+
+    <div class="header-section">
+        <h2>
+            <i class="fas fa-user-edit"></i>
+            Update Employee
+        </h2>
+    </div>
 
     <form th:action="@{'/employees/update/' + ${employeeDTO.empno}}"
           th:object="${employeeDTO}"
@@ -45,25 +311,36 @@
 
         <input type="hidden" th:field="*{empno}"/>
 
-        <div class="text-center">
+        <div class="photo-section">
             <img th:if="${employeeDTO.imageUrl != null}"
                  th:src="@{${employeeDTO.imageUrl}}"
                  alt="Employee Image"
                  class="emp-photo"/>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" th:field="*{ename}" class="form-control" required>
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-user"></i>
+                Employee Name
+                <span class="required-mark">*</span>
+            </label>
+            <input type="text" th:field="*{ename}" class="form-control" placeholder="Enter full name" required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Job</label>
-            <input type="text" th:field="*{job}" class="form-control" required>
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-briefcase"></i>
+                Job Title
+                <span class="required-mark">*</span>
+            </label>
+            <input type="text" th:field="*{job}" class="form-control" placeholder="e.g. Software Engineer" required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Manager</label>
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-user-tie"></i>
+                Manager
+            </label>
             <select th:field="*{managerName}" class="form-select">
                 <option value="">-- Select Manager --</option>
                 <option th:each="mgr : ${managers}"
@@ -73,23 +350,40 @@
             </select>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Hire Date</label>
-            <input type="date" th:field="*{hiredate}" class="form-control" required>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-calendar-alt"></i>
+                    Hire Date
+                    <span class="required-mark">*</span>
+                </label>
+                <input type="date" th:field="*{hiredate}" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-dollar-sign"></i>
+                    Salary
+                    <span class="required-mark">*</span>
+                </label>
+                <input type="number" th:field="*{sal}" class="form-control" placeholder="0.00" required>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Salary</label>
-            <input type="number" th:field="*{sal}" class="form-control" required>
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-percentage"></i>
+                Commission
+            </label>
+            <input type="number" th:field="*{comm}" class="form-control" placeholder="0.00">
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Commission</label>
-            <input type="number" th:field="*{comm}" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Department</label>
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-building"></i>
+                Department
+                <span class="required-mark">*</span>
+            </label>
             <select th:field="*{deptName}" class="form-select" required>
                 <option value="">-- Select Department --</option>
                 <option th:each="d : ${departments}"
@@ -99,22 +393,42 @@
             </select>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Change Image (optional)</label>
-            <input type="file" name="file" class="form-control" accept="image/*">
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-image"></i>
+                Change Profile Image (Optional)
+            </label>
+            <div class="file-upload-wrapper">
+                <input type="file" name="file" id="file" accept="image/*" onchange="updateFileName(this)">
+                <label for="file" class="file-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Click to upload new image</span>
+                </label>
+            </div>
+            <div id="file-name" class="file-name"></div>
         </div>
 
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary w-100 mt-3">
-                <i class="bi bi-save"></i> Update
+        <div class="button-group">
+            <button type="submit" class="btn-action btn-update">
+                <i class="fas fa-save"></i> Update Employee
             </button>
-            <a href="/employees" class="btn btn-secondary w-100 mt-2">
-                <i class="bi bi-arrow-left"></i> Back
+            <a href="/employees" class="btn-action btn-back">
+                <i class="fas fa-times"></i> Cancel
             </a>
         </div>
     </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function updateFileName(input) {
+        const fileName = document.getElementById('file-name');
+        if (input.files && input.files[0]) {
+            fileName.textContent = '📎 ' + input.files[0].name;
+        } else {
+            fileName.textContent = '';
+        }
+    }
+</script>
 </body>
 </html>
