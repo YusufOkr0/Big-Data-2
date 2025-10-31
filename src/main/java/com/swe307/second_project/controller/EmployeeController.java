@@ -4,8 +4,8 @@ import com.swe307.second_project.dtos.EmployeeDTO;
 import com.swe307.second_project.entity.Department;
 import com.swe307.second_project.entity.Employee;
 import com.swe307.second_project.repository.DepartmentRepository;
-import com.swe307.second_project.service.EmployeeService;
-import com.swe307.second_project.service.S3ClientService;
+import com.swe307.second_project.service.Impl.EmployeeService;
+import com.swe307.second_project.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final DepartmentRepository departmentRepository;
-    private final S3ClientService s3ClientService;
+    private final StorageService storageService;
 
 
     @GetMapping
@@ -56,7 +56,7 @@ public class EmployeeController {
                               @RequestParam(required = false) Integer managerId) {
 
         if (file != null && !file.isEmpty()) {
-            String fileName = s3ClientService.uploadFile(file);
+            String fileName = storageService.uploadFile(file);
             employee.setImageUrl(fileName);
         }
 

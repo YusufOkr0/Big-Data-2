@@ -1,18 +1,16 @@
 SET FOREIGN_KEY_CHECKS=0;
 
--- Drop tables if exist (opsiyonel)
 DROP TABLE IF EXISTS emp;
 DROP TABLE IF EXISTS dept;
 DROP TABLE IF EXISTS salgrade;
 
--- DEPT table
+
 CREATE TABLE dept (
                       deptno INT PRIMARY KEY,
                       dname VARCHAR(50),
                       loc VARCHAR(50)
 );
 
--- EMP table
 CREATE TABLE emp (
                      empno INT AUTO_INCREMENT PRIMARY KEY,
                      ename VARCHAR(50),
@@ -27,31 +25,28 @@ CREATE TABLE emp (
                      FOREIGN KEY (deptno) REFERENCES dept(deptno)
 );
 
--- SALGRADE table
 CREATE TABLE salgrade (
                           grade INT PRIMARY KEY,
                           losal INT,
                           hisal INT
 );
 
--- Insert DEPT
 INSERT INTO dept VALUES (10,'ACCOUNTING','NEW YORK');
 INSERT INTO dept VALUES (20,'RESEARCH','DALLAS');
 INSERT INTO dept VALUES (30,'SALES','CHICAGO');
 INSERT INTO dept VALUES (40,'OPERATIONS','BOSTON');
 
--- Insert SALGRADE
+
 INSERT INTO salgrade VALUES (1,700,1200);
 INSERT INTO salgrade VALUES (2,1201,1400);
 INSERT INTO salgrade VALUES (3,1401,2000);
 INSERT INTO salgrade VALUES (4,2001,3000);
 INSERT INTO salgrade VALUES (5,3001,9999);
 
--- EMP insert sıralaması: önce mgr=NULL olan
-INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno, image_url)
-VALUES (7839,'KING','PRESIDENT',7839,'1981-11-17',5000,NULL,10,'king.jpg');
 
--- Diğer EMP kayıtları
+INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno, image_url)
+VALUES (7839,'KING','PRESIDENT',NULL,'1981-11-17',5000,NULL,10,'king.jpg');
+
 INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno, image_url) VALUES
                                                                                      (7566,'JONES','MANAGER',7839,'1981-04-02',2975,NULL,20,'jones.jpg'),
                                                                                      (7782,'CLARK','MANAGER',7839,'1981-06-09',2450,NULL,10,'clark.jpg'),

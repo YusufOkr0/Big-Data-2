@@ -1,13 +1,13 @@
-package com.swe307.second_project.service;
+package com.swe307.second_project.service.Impl;
 
 import com.swe307.second_project.dtos.EmployeeDTO;
 import com.swe307.second_project.entity.Department;
 import com.swe307.second_project.entity.Employee;
 import com.swe307.second_project.repository.DepartmentRepository;
 import com.swe307.second_project.repository.EmployeeRepository;
+import com.swe307.second_project.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -28,7 +27,7 @@ public class EmployeeService {
     private String AWS_OBJECT_URL;
 
     private final EmployeeRepository employeeRepository;
-    private final S3ClientService s3ClientService;
+    private final StorageService storageService;
     private final DepartmentRepository departmentRepository;
 
 
@@ -64,7 +63,7 @@ public class EmployeeService {
                 .orElseThrow(() -> new RuntimeException("Employee not found with empno: " + empno));
 
         employeeRepository.clearManager(empno);
-        s3ClientService.deleteFileFromS3(employee.getImageUrl());
+        storageService.deleteFileFromStorage(employee.getImageUrl());
         employeeRepository.deleteById(empno);
     }
 
@@ -95,9 +94,9 @@ public class EmployeeService {
 
         if (file != null && !file.isEmpty()) {
             if (existing.getImageUrl() != null) {
-                s3ClientService.deleteFileFromS3(existing.getImageUrl());
+                storageService.deleteFileFromStorage(existing.getImageUrl());
             }
-            String newUrl = s3ClientService.uploadFile(file);
+            String newUrl = storageService.uploadFile(file);
             existing.setImageUrl(newUrl);
         }
 
