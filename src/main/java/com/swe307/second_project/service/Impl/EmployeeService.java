@@ -37,7 +37,7 @@ public class EmployeeService {
         return employees.stream().map(this::employeeDTOMapper).toList();
     }
 
-    @Cacheable(value = "employee", key = "#empno", unless = "#result == null")            // redisKey = employee::empno
+    @Cacheable(value = "employee", key = "#empno")            // redisKey = employee::empno
     public EmployeeDTO getEmployeeById(Integer empno) {
         Employee employee = employeeRepository.findById(empno)
                 .orElseThrow(() -> new RuntimeException("Employee not found with empno: " + empno));
@@ -45,11 +45,11 @@ public class EmployeeService {
         return employeeDTOMapper(employee);
     }
 
-    @CachePut(value = "employee", key = "#employee.empno", unless = "#result == null")
+    @CachePut(value = "employee", key = "#result.empno")
     @CacheEvict(value = "employees", allEntries = true)
     public EmployeeDTO saveEmployee(Employee employee) {
-        Employee existing = employeeRepository.save(employee);
-        return employeeDTOMapper(existing);
+        Employee saved = employeeRepository.save(employee);
+        return employeeDTOMapper(saved);
     }
 
 
@@ -127,4 +127,5 @@ public class EmployeeService {
                 .imageUrl(AWS_OBJECT_URL + existing.getImageUrl())
                 .build();
     }
+
 }
