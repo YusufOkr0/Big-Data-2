@@ -25,6 +25,10 @@ public class EmployeeService {
 
     @Value("${aws.object.url}")
     private String AWS_OBJECT_URL;
+    @Value("${hadoop.url}")
+    private String HADOOP_URL;
+    @Value("${storage.type}")
+    private String storageType;
 
     private final EmployeeRepository employeeRepository;
     private final StorageService storageService;
@@ -115,6 +119,9 @@ public class EmployeeService {
     private EmployeeDTO employeeDTOMapper(Employee existing) {
         String deptName = existing.getDept() == null ? null : existing.getDept().getDname();
         String managerName = existing.getManager() == null ? null : existing.getManager().getEname();
+
+        String imageUrlPrefix = storageType.equals("s3") ? AWS_OBJECT_URL : HADOOP_URL; // hadoop configure edilmis ise onun base urlini kullan yoksa s3.
+
         return EmployeeDTO.builder()
                 .empno(existing.getEmpno())
                 .ename(existing.getEname())
@@ -124,7 +131,7 @@ public class EmployeeService {
                 .comm(existing.getComm())
                 .managerName(managerName)
                 .deptName(deptName)
-                .imageUrl(AWS_OBJECT_URL + existing.getImageUrl())
+                .imageUrl(imageUrlPrefix + existing.getImageUrl())
                 .build();
     }
 
